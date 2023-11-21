@@ -22,8 +22,8 @@ auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
 
     Sys.sleep(1)
 
-    keyring::key_set(service = "apikey",
-                     username = "sendgridr")
+    keyring::key_set(service = kr$service,
+                     username = kr$username)
   } else {
     if (keyring::keyring_is_locked(kr$keyring))
       keyring::keyring_unlock(kr$keyring, password = auth_key())

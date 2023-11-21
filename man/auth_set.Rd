@@ -2,16 +2,16 @@
 % Please edit documentation in R/auth.R
 \name{auth_set}
 \alias{auth_set}
-\title{Set API key for auth.}
+\title{Set API secret for authorization with the Sendgrid API.}
 \usage{
-auth_set(apikey)
+auth_set(apisecret = Sys.getenv("SENDGRID_SECRET"))
 }
 \arguments{
-\item{apikey}{sendgrid api key. If key has value, just use as api key. If without param, function call interactive prompt input.}
+\item{apisecret}{sendgrid api secret. Can be set as Environment variable \code{SENDGRID_SECRET} or provided interactively via prompt input.}
 }
 \value{
 None
 }
 \description{
-Set API key for auth.
+The \code{apisecret} must have read access or higher for the \verb{API Keys} permission. See the Settings > API Keys menu in sendgrid to create & modify key permissions.
 }

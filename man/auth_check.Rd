@@ -2,7 +2,7 @@
 % Please edit documentation in R/auth.R
 \name{auth_check}
 \alias{auth_check}
-\title{Check API key for auth.}
+\title{Check for a working API secret to authorize with Sendgrid.}
 \usage{
 auth_check()
 }
@@ -10,5 +10,5 @@ auth_check()
 TRUE/FALSE check work fine return TRUE.
 }
 \description{
-Check API key for auth.
+Check for a working API secret to authorize with Sendgrid.
 }

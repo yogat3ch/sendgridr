@@ -22,7 +22,6 @@ auth_check <- function() {
                       "content-type" = "application/json")
   chk <- httr::status_code(httr::GET(tar, ahd))
   return(chk == 200)
-  return(auth_check_work())
 }
 
 #' Retrieve the SendGrid API Secret for authorization with the Sendgrid API

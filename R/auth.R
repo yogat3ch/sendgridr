@@ -56,3 +56,12 @@ auth_key <- function() {
   keyring::key_get(service = "apikey",
                    username = "sendgridr")
 }
+
+#' Environment to store keyring related variables
+kr <- rlang::new_environment(
+  data = list(
+    keyring = "sendgrid",
+    service = "apikey",
+    username = "sendgridr"
+  )
+)

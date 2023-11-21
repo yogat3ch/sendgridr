@@ -6,7 +6,7 @@
 #' @return None
 auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
   stopifnot("This system does not support keyring. See `keyring::has_keyring_support` for details." = keyring::has_keyring_support(),
-            "apikey must be provided if not set in .Renviron as `SENDGRID_SECRET`" = nzchar(apisecret))
+            "apisecret must be provided if not set in .Renviron as `SENDGRID_SECRET`" = !nzchar(apisecret))
 
   kr_list <- keyring::keyring_list()
   if (!is.data.frame(kr_list) || !as.logical(nrow(kr_list))) {

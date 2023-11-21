@@ -52,7 +52,7 @@ auth_check <- function() {
 auth_check_work <- function() {
   tar <- "https://api.sendgrid.com/v3/api_keys"
   ahd <-
-    httr::add_headers("Authorization" = paste0("Bearer ", auth_key()),
+    httr::add_headers("Authorization" = paste0("Bearer ", auth_secret()),
                       "content-type" = "application/json")
   chk <- httr::status_code(httr::GET(tar, ahd))
   return(chk == 200)
@@ -60,14 +60,30 @@ auth_check_work <- function() {
 
 #' @importFrom keyring key_get
 auth_exist <- function() {
-  chk <- try(auth_key(), silent = T)
+  chk <- try(auth_secret(), silent = T)
   return(!inherits(chk, "try-error"))
 }
 
-#' @importFrom keyring key_get
+#' Retrieve the SendGrid API Secret for authorization with the Sendgrid API
+#' @return The sendgrid API Secret
+auth_secret <- function() {
+  keyring::key_get(service = kr$service,
+                   username = kr$username,
+                   keyring = kr$keyring)
+}
+
+#' Returns the `SENDGRID_KEY` environment variable for unlocking non-system default keyring on Linux systems.
+#'
+#' @return \code{chr} The `SENDGRID_KEY` environment variable value
+#' @export
+#'
+
 auth_key <- function() {
-  keyring::key_get(service = "apikey",
-                   username = "sendgridr")
+  out <- Sys.getenv("SENDGRID_KEY", unset = "")
+  if (!nzchar(out)) {
+    stop("Please set `SENDGRID_KEY` in your .Renviron to be used as a password for the sendgrid keyring.")
+  }
+  return(out)
 }
 
 #' Environment to store keyring related variables

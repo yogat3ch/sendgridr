@@ -17,11 +17,6 @@ auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
 #' @importFrom usethis ui_info
 #' @export
 auth_check <- function() {
-  if (!auth_exist()) {
-    usethis::ui_info("Api key is unset")
-    return(FALSE)
-  }
-
   return(auth_check_work())
 }
 
@@ -36,17 +31,12 @@ auth_check_work <- function() {
 }
 
 
-auth_exist <- function() {
-  chk <- try(auth_secret(), silent = T)
-  return(!inherits(chk, "try-error"))
-}
-
 #' Retrieve the SendGrid API Secret for authorization with the Sendgrid API
 #' @return The sendgrid API Secret
 auth_secret <- function() {
   out <- Sys.getenv("SENDGRID_SECRET")
   stopifnot("SENDGRID_SECRET must be set as an Environment Variable with the Sendgrid API key secret value." = nzchar(out))
-  out
+  return(out)
 }
 
 #' Returns the `SENDGRID_KEY` environment variable for unlocking non-system default keyring on Linux systems.

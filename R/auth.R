@@ -1,7 +1,6 @@
 #' Set API secret for authorization with the Sendgrid API.
 #' @description The `apisecret` must have read access or higher for the `API Keys` permission. See the Settings > API Keys menu in sendgrid to create & modify key permissions.
 #' @param apisecret sendgrid api secret. Can be set as Environment variable `SENDGRID_SECRET` or provided interactively via prompt input.
-#' @importFrom keyring key_set
 #' @export
 #' @return None
 auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
@@ -58,7 +57,7 @@ auth_check_work <- function() {
   return(chk == 200)
 }
 
-#' @importFrom keyring key_get
+
 auth_exist <- function() {
   chk <- try(auth_secret(), silent = T)
   return(!inherits(chk, "try-error"))

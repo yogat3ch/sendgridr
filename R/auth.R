@@ -14,22 +14,16 @@ auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
 #' Check for a working API secret to authorize with Sendgrid.
 #'
 #' @return TRUE/FALSE check work fine return TRUE.
-#' @importFrom usethis ui_info
 #' @export
 auth_check <- function() {
-  return(auth_check_work())
-}
-
-#' @importFrom httr GET add_headers status_code
-auth_check_work <- function() {
   tar <- "https://api.sendgrid.com/v3/api_keys"
   ahd <-
     httr::add_headers("Authorization" = paste0("Bearer ", auth_secret()),
                       "content-type" = "application/json")
   chk <- httr::status_code(httr::GET(tar, ahd))
   return(chk == 200)
+  return(auth_check_work())
 }
-
 
 #' Retrieve the SendGrid API Secret for authorization with the Sendgrid API
 #' @return The sendgrid API Secret

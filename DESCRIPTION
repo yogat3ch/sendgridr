@@ -18,8 +18,7 @@ Imports:
     usethis,
     cli,
     base64enc,
-    emayili (>= 0.7),
-    keyring
+    emayili (>= 0.7)
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Depends: 

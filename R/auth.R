@@ -1,36 +1,13 @@
 #' Set API secret for authorization with the Sendgrid API.
 #' @description The `apisecret` must have read access or higher for the `API Keys` permission. See the Settings > API Keys menu in sendgrid to create & modify key permissions.
 #' @param apisecret sendgrid api secret. Can be set as Environment variable `SENDGRID_SECRET` or provided interactively via prompt input.
-#' @importFrom keyring key_set
 #' @export
 #' @return None
 auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
-  stopifnot("This system does not support keyring. See `keyring::has_keyring_support` for details." = keyring::has_keyring_support(),
-            "apikey must be provided if not set in .Renviron as `SENDGRID_SECRET`" = nzchar(apisecret))
+  stopifnot("apisecret must be provided if not set in .Renviron as `SENDGRID_SECRET`" = !nzchar(apisecret))
 
-  kr_list <- keyring::keyring_list()
-  if (!is.data.frame(kr_list) || !as.logical(nrow(kr_list))) {
-    keyring::keyring_create(kr$keyring, password = auth_key())
-  } else {
-    kr$keyring <- kr_list$keyring[1]
-  }
-
-  if (missing(apisecret)) {
-    usethis::ui_todo(
-      "Your API Key is at {usethis::ui_value('https://app.sendgrid.com/settings/api_keys')}"
-    )
-
-    Sys.sleep(1)
-
-    keyring::key_set(service = "apikey",
-                     username = "sendgridr")
-  } else {
-    if (keyring::keyring_is_locked(kr$keyring))
-      keyring::keyring_unlock(kr$keyring, password = auth_key())
-    keyring::key_set_with_value(kr$service,
-                                username = "sendgridr",
-                                password = apisecret,
-                                keyring = kr$keyring)
+  if (!nzchar(Sys.getenv("SENDGRID_SECRET"))) {
+    UU::creds_to_renviron(SENDGRID_SECRET = apisecret)
   }
 }
 
@@ -58,7 +35,7 @@ auth_check_work <- function() {
   return(chk == 200)
 }
 
-#' @importFrom keyring key_get
+
 auth_exist <- function() {
   chk <- try(auth_secret(), silent = T)
   return(!inherits(chk, "try-error"))
@@ -67,9 +44,9 @@ auth_exist <- function() {
 #' Retrieve the SendGrid API Secret for authorization with the Sendgrid API
 #' @return The sendgrid API Secret
 auth_secret <- function() {
-  keyring::key_get(service = kr$service,
-                   username = kr$username,
-                   keyring = kr$keyring)
+  out <- Sys.getenv("SENDGRID_SECRET")
+  stopifnot("SENDGRID_SECRET must be set as an Environment Variable with the Sendgrid API key secret value." = nzchar(out))
+  out
 }
 
 #' Returns the `SENDGRID_KEY` environment variable for unlocking non-system default keyring on Linux systems.

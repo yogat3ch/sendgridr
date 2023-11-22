@@ -17,8 +17,12 @@ auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
 #' @export
 auth_check <- function() {
   tar <- "https://api.sendgrid.com/v3/api_keys"
+  secret <- auth_secret()
+  if (!nzchar(secret)) {
+    return(FALSE)
+  }
   ahd <-
-    httr::add_headers("Authorization" = paste0("Bearer ", auth_secret()),
+    httr::add_headers("Authorization" = paste0("Bearer ", secret),
                       "content-type" = "application/json")
   chk <- httr::status_code(httr::GET(tar, ahd))
   return(chk == 200)
@@ -28,7 +32,6 @@ auth_check <- function() {
 #' @return The sendgrid API Secret
 auth_secret <- function() {
   out <- Sys.getenv("SENDGRID_SECRET")
-  stopifnot("SENDGRID_SECRET must be set as an Environment Variable with the Sendgrid API key secret value." = nzchar(out))
   return(out)
 }
 

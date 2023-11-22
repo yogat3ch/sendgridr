@@ -1,3 +1,5 @@
+# sendgridr 0.6.3
+
 # sendgridr 0.6.2
 
 * Fix email_chk return TRUE for `a+1@mail.com`.

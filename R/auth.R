@@ -16,15 +16,19 @@ auth_set <- function(apisecret = Sys.getenv("SENDGRID_SECRET")) {
 #' @return TRUE/FALSE check work fine return TRUE.
 #' @export
 auth_check <- function() {
-  tar <- "https://api.sendgrid.com/v3/api_keys"
   secret <- auth_secret()
   if (!nzchar(secret)) {
     return(FALSE)
   }
-  ahd <-
-    httr::add_headers("Authorization" = paste0("Bearer ", secret),
-                      "content-type" = "application/json")
-  chk <- httr::status_code(httr::GET(tar, ahd))
+
+  get_args <- list(
+    url = "https://api.sendgrid.com/v3/api_keys",
+    config = httr::add_headers("Authorization" = paste0("Bearer ", secret),
+                      "content-type" = "application/json"),
+    if (getOption("use_debug", FALSE)) httr::verbose(info = TRUE)
+  )
+
+  chk <- httr::status_code(do.call(httr::GET, get_args))
   return(chk == 200)
 }
 

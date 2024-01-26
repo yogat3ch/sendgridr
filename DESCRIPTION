@@ -17,6 +17,7 @@ Imports:
     jsonlite,
     usethis,
     cli,
+    digest,
     base64enc,
     emayili (>= 0.7),
     UU
